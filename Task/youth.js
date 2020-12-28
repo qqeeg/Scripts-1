@@ -170,6 +170,7 @@ else if ($.time('HH')>4&&$.time('HH')<8){
   await comApp();
   await ArticleShare();
   await openbox();
+  await ArticleShare2();
   await getAdVideo();
   await gameVideo();
   await readArticle();
@@ -397,7 +398,22 @@ function ArticleShare() {
     return new Promise((resolve, reject) => {
         setTimeout(() => {
             const url = {
-                url: `https://focu.youth.cn/article/s?signature=0Z3Jgv96wqmVPeM7obRdNpHXgAmRhxNPJ6y4jpGDnANbo8KXQr&uid=46308484&phone_code=26170a068d9b9563e7028f197c8a4a2b&scid=33007686&time=1602937887&app_version=1.7.8&sign=d21dd80d0c6563f6f810dd76d7e0aef2`,
+                url: `https://focu.youth.cn/article/s?signature=RQ3qz2nVgKk9rep70PXqyXSX8EL3tkPmrB97yXmv0ZJLWANOM5&uid=51573926&phone_code=5dd44a90e755b8003993df3047a6af78&scid=35453064&time=1609166594&app_version=1.8.2&sign=896b9d50c0c99a6ce47f4288d3cfc839`,
+                headers: JSON.parse(signheaderVal),
+            }
+            $.post(url, async(error, response, data) => {
+                //boxres = JSON.parse(data)
+                resolve()
+            })
+        },s)
+    })
+}
+
+function ArticleShare2() {
+    return new Promise((resolve, reject) => {
+        setTimeout(() => {
+            const url = {
+                url: `https://focus.youth.cn/article/s?signature=RQ3qz2nVgKk9rep70PXqyXSX8EL3tkPmrB97yXmv0ZJLWANOM5&uid=51573926&phone_code=5dd44a90e755b8003993df3047a6af78&scid=35453064&time=1609166594&app_version=1.8.2&sign=896b9d50c0c99a6ce47f4288d3cfc839`,
                 headers: JSON.parse(signheaderVal),
             }
             $.post(url, async(error, response, data) => {
