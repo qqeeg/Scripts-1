@@ -67,7 +67,16 @@ if (typeof $request !== 'undefined') {
       ID =  decodeURIComponent(bodyval).match(/"openid" : "(\w+)"/)[1]
       apptoken = decodeURIComponent(bodyval).match(/"apptoken" : "(\w+)"/)[1]
       appVersion = decodeURIComponent(bodyval).match(/"appversion" : "(.*)"/)[1]
-      cookieval = `xz_jkd_appkey=${ID}!iOS!${appVersion}`
+      if bodyval.indexOf('iOS') > 0) {
+        console.log(`${$.userName}的cookie来自iOS客户端`)
+        UA = 'Mozilla/5.0 (iPhone; CPU iPhone OS 13_4_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148'
+        oos = 'iOS'
+      } else if (bodyval.indexOf('android') > 0) {
+        console.log(`${$.userName}的cookie来自android客户端`)
+        UA = 'Dalvik/2.1.0 (Linux; U; Android 10; ONEPLUS A5010 Build/QKQ1.191014.012)'
+        oos = 'android'
+      }
+      cookieval = `xz_jkd_appkey=${ID}!${oos}!${appVersion}`
       times = Date.parse(new Date())/1000
       $.index = i + 1;
    console.log("聚看点账号"+$.index+"任务开始\n")
@@ -91,11 +100,7 @@ if (typeof $request !== 'undefined') {
    if (signtimes&&signtimes<5){
       await WelfareCash();
    }
-   if(new Date().getTimezoneOffset() != '-480'){
-    continue
-   } else {
-     await artTotal() 
-}  
+     await artTotal()  
    if ((150-artcount) == 0&&(50-videocount) ==0){
      $.msg($.name+" 昵称:"+userName, $.sub, $.desc+"\n<今日阅读任务已完成>",{'media-url': calendarpic })
      }
@@ -481,7 +486,7 @@ function readTask(artid,arttype) {
    let rewurl =  {
       url: `https://www.xiaodouzhuan.cn/jkd/newmobile/artDetail.action`,
       headers: {Cookie:cookieval,'User-Agent':UA},
-      body: `jsondata={"appid":"xzwl","channel":"IOS","relate":1,"artid":"${artid}","os":"IOS","openid":"${ID}","apptoken":"${apptoken}","appversion":"${appVersion}"}`
+      body: `jsondata={"appid":"xzwl","channel":"${oos}","relate":1,"artid":"${artid}","os":"${oos}","openid":"${ID}","apptoken":"${apptoken}","appversion":"${appVersion}"}`
       }
    $.post(rewurl, async(error, resp, data) => {
      if(resp.statusCode ==200){
@@ -501,7 +506,7 @@ function finishTask(artid,arttype) {
    let finishurl =  {
       url: `https://www.xiaodouzhuan.cn/jkd/account/readAccount.action`,
       headers: {Cookie:cookieval,'User-Agent':UA},      
-      body: `jsondata={"appid":"xzwl","read_weal":0,"paytype":"${arttype}","securitykey":"","channel":"iOS","time":"${times}","apptoken":"${apptoken}","appversion":"${appVersion}","openid":"${ID}","os":"iOS","artid":${artid},"accountType":"0","readmodel":"1"}`
+      body: `jsondata={"appid":"xzwl","read_weal":0,"paytype":"${arttype}","securitykey":"","channel":"${oos}","time":"${times}","apptoken":"${apptoken}","appversion":"${appVersion}","openid":"${ID}","os":"${oos}","artid":${artid},"accountType":"0","readmodel":"1"}`
       }
    $.post(finishurl, async(error, response, data) => {
      //$.log(data+"\n")
@@ -524,7 +529,7 @@ function stimulate() {
    let Advurl =  {
       url: `https://www.xiaodouzhuan.cn/jkd/newmobile/stimulateAdv.action`,
       headers: {Cookie:cookieval,'User-Agent':UA},
-      body: `jsondata={"read_weal":"0","appid":"xzwl", "position":"17","time" : "${times}", "apptoken" : "${apptoken}","appversion":"${appVersion}","openId":"${ID}","os":"iOS","channel":"iOS"}`
+      body: `jsondata={"read_weal":"0","appid":"xzwl", "position":"17","time" : "${times}", "apptoken" : "${apptoken}","appversion":"${appVersion}","openId":"${ID}","os":"${oos}","channel":"${oos}"}`
       }
    $.post(Advurl, async(error, resp, data) => {
        //$.log(data+"\n")
@@ -547,7 +552,7 @@ function Stimulate(position) {
    let stimurl =  {
       url: `https://www.xiaodouzhuan.cn/jkd/account/stimulateAdvAccount.action`,
       headers: {Cookie:cookieval,'User-Agent':UA},      
-      body: `jsondata={"read_weal":"0","appid":"xzwl", "position" : ${position},"time" : "${times}","apptoken":"${apptoken}","appversion":"5.6.5","openid":"${ID}","os":"iOS","channel":"iOS"}`
+      body: `jsondata={"read_weal":"0","appid":"xzwl", "position" : ${position},"time" : "${times}","apptoken":"${apptoken}","appversion":"5.6.5","openid":"${ID}","os":"${oos}","channel":"${oos}"}`
       }
    $.post(stimurl, async(error, resp, data) => {
        //$.log(data+"\n")
